@@ -6,8 +6,9 @@ import API from "../utils/API";
 class EmployeeContainer extends Component {
   state = {
     result: [],
-    search: "",
-    currentSort: ""
+    // search: "",
+    currentSort: "down",
+    sortField: ""
   };
 
   // When this component mounts, search for the movie "The Matrix"
@@ -33,15 +34,32 @@ class EmployeeContainer extends Component {
 
   // };
 
-	// method called every time the sort button is clicked
+  // Sort types
+  sortTypes = {
+    up: {
+      class: 'sort-up',
+      fn: ((a, b) => a.firstName > b.firstName? 0:1)
+    },
+    down: {
+      class: 'sort-down',
+      fn: ((a, b) => a.firstName < b.firstName? 0:-1)
+    },
+    default: {
+      class: 'sort',
+      fn: (a, b) => 0
+    }
+  };
+  
+  // method called every time the sort button is clicked
 	// it will change the currentSort value to the next one
 	onSortChange = () => {
-		const { currentSort } = this.state;
-		let nextSort;
+    // console.log(this.state.result.sort((a, b) => a.lastName > b.lastName ? 1:-1));     
 
-		if (currentSort === 'down') nextSort = 'up';
-		else if (currentSort === 'up') nextSort = 'default';
-		else if (currentSort === 'default') nextSort = 'down';
+    let nextSort;
+
+		if (this.state.currentSort === 'down') nextSort = 'up';
+		else if (this.state.currentSort === 'up') nextSort = 'default';
+		else if (this.state.currentSort === 'default') nextSort = 'down';
 
 		this.setState({
 			currentSort: nextSort
@@ -55,6 +73,8 @@ class EmployeeContainer extends Component {
   };
 
   render() {
+    // const{ data } = this.state.result;
+    // const{ currentSort } = this.state;
     return (
       <div className="container">
         <div className="row">
@@ -62,12 +82,16 @@ class EmployeeContainer extends Component {
             <table className="col-md-12">
                 <tr>
                   <th>Pic</th>
-                  <th>Name</th>
+                  <th onClick={this.onSortChange}>First Name  
+                  {/* <button onClick={this.onSortChange}> ^
+								</button> */}
+                  </th>
+                  <th>Last Name </th>
                   <th>Email</th>
                   <th>Phone</th>
                   <th>Age</th>
                 </tr>
-              {(this.state.result.map((item, index) =>
+              {([...this.state.result].sort(this.sortTypes[this.state.currentSort].fn).map((item) =>
                 <EmployeeCard
                   picture={item.picture}
                   firstName={item.firstName}
@@ -75,7 +99,7 @@ class EmployeeContainer extends Component {
                   email={item.email}
                   phone={item.phone}
                   age={item.age}
-                  key={index}
+                  key={item.key}
                 />
               )
               )}
