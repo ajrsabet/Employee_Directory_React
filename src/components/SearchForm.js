@@ -2,23 +2,6 @@ import React from "react";
 
 
 function SearchForm(props) {
-  // const [developerState, setDeveloperState] = useState({
-  //   filter: ""
-  // })
-  // When the form is submitted, search the OMDB API for the value of `this.state.search`
-  // handleFormSubmit = event => {
-  //   event.preventDefault();
-  //   this.filterEmployees(this.state.search);
-  // };
-  
-  // handleInputChange = event => {
-  //   event.preventDefault();
-  //   this.setState({
-  //     filter: 
-  //   })
-  //   // this.filterEmployees(this.state.search);
-  // };
-
   return (
     <form>
       <div className="form-group">

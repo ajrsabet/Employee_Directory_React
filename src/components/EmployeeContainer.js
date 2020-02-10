@@ -7,7 +7,6 @@ class EmployeeContainer extends Component {
   state = {
     result: [],
     filter: "",
-    filterBy: "lastName",
     currentSort: "default",
     sortField: ""
   };
@@ -17,11 +16,10 @@ class EmployeeContainer extends Component {
     API.search()
       .then(res => {
         console.log(res);
-        
+
         this.setState({
           result: res.data.results.map((e, i) => ({
-            firstName: e.name.first,
-            lastName: e.name.last,
+            name: e.name.first + " " + e.name.last,
             picture: e.picture.large,
             email: e.email,
             phone: e.phone,
@@ -37,11 +35,11 @@ class EmployeeContainer extends Component {
   sortTypes = {
     up: {
       class: 'sort-up',
-      fn: ((a, b) => (a.firstName > b.firstName) ? 1 : 1)
+      fn: ((a, b) => (a.name > b.name) ? 1 : -1)
     },
     down: {
       class: 'sort-down',
-      fn: ((a, b) => (b.firstName > a.firstName) ? -1 : -1)
+      fn: ((a, b) => (a.name > b.name) ? -1 : 1)
     },
     default: {
       class: 'sort',
@@ -53,17 +51,17 @@ class EmployeeContainer extends Component {
   // it will change the currentSort value to the next one
   onSortChange = () => {
     // console.log(this.state.filter);     
-    
+
     let nextSort;
-    
+
     if (this.state.currentSort === 'down') nextSort = 'up';
     else if (this.state.currentSort === 'up') nextSort = 'default';
     else if (this.state.currentSort === 'default') nextSort = 'down';
-    console.log(this.state.currentSort);     
+    console.log(this.state.currentSort);
     console.log(this.state.result);
-    
+
     // console.log(nextSort);     
-    
+
     this.setState({
       currentSort: nextSort
     });
@@ -74,7 +72,7 @@ class EmployeeContainer extends Component {
   //   event.preventDefault();
   //   this.filterEmployees(this.state.search);
   // };
-  
+
   handleInputChange = event => {
     // event.preventDefault();
     const value = event.target.value;
@@ -91,37 +89,37 @@ class EmployeeContainer extends Component {
     // const{ data } = this.state.result;
     // const{ currentSort } = this.state;
     return (
-      <div className="container">
-        <div className="navbar">
-            <div heading="Search">
-              <SearchForm
-                value={this.state.search}
-                handleInputChange={this.handleInputChange}
-                // handleFormSubmit={this.handleFormSubmit}
-              />
-            </div>
+      <div>
+        <div className="navbar navbar-expand-lg navbar-dark bg-dark">
+          <div heading="Search">
+            <SearchForm
+              value={this.state.search}
+              handleInputChange={this.handleInputChange}
+            // handleFormSubmit={this.handleFormSubmit}
+            />
           </div>
-        <div className="row">
+        </div>
+        <div className="container">
+          <div className="row">
             <table className="col-md-12">
               <thead>
                 <tr>
                   <th>Pic</th>
-                  <th onClick={this.onSortChange}>First Name
+                  <th onClick={this.onSortChange}>Name
                   {/* <button onClick={this.onSortChange}> ^
 								</button> */}
                   </th>
-                  <th>Last Name </th>
+                  {/* <th>Last Name </th> */}
                   <th>Email</th>
                   <th>Phone</th>
                   <th>Age</th>
                 </tr>
               </thead>
               <tbody>
-                {([...this.state.result].filter(el => el.lastName.toLowerCase().indexOf((this.state.filter).toLowerCase()) !== -1).sort(this.sortTypes[this.state.currentSort].fn).map((item) =>
-                  <EmployeeCard 
+                {([...this.state.result].filter(el => el.name.toLowerCase().indexOf((this.state.filter).toLowerCase()) !== -1).sort(this.sortTypes[this.state.currentSort].fn).map((item) =>
+                  <EmployeeCard
                     picture={item.picture}
-                    firstName={item.firstName}
-                    lastName={item.lastName}
+                    name={item.name}
                     email={item.email}
                     phone={item.phone}
                     age={item.age}
@@ -131,6 +129,7 @@ class EmployeeContainer extends Component {
                 )}
               </tbody>
             </table>
+          </div>
         </div>
       </div>
     );
