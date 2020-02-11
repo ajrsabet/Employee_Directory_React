@@ -15,12 +15,6 @@ function SearchForm(props) {
           placeholder="Search Employees"
           id="filter"
         />
-        <select name="filter">
-  <option value="firstName">First Name</option>
-  <option value="lastName">Last Name</option>
-  <option value="email">Email</option>
-  <option value="phone">Phone</option>
-</select>
       </div>
     </form>
   );

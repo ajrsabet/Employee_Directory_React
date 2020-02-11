@@ -105,9 +105,8 @@ class EmployeeContainer extends Component {
               <thead>
                 <tr>
                   <th>Pic</th>
-                  <th onClick={this.onSortChange}>Name
-                  {/* <button onClick={this.onSortChange}> ^
-								</button> */}
+                  <th>Name
+                  <i class="fas fa-sort" onClick={this.onSortChange}></i>
                   </th>
                   {/* <th>Last Name </th> */}
                   <th>Email</th>
